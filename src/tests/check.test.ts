@@ -67,3 +67,24 @@ describe("check 1", () => {
         expect(result).toEqual(expected);
     });
 });
+
+// describe("I love you. Do you love me?", () => {
+//     const source = "I love you. Do you love me?";
+
+//     // 这个测试通不过
+//     it("case: I love you.", () => {
+//         const userInput = "I love you.";
+//         const expected = [
+//             { word: "I" },
+//             { word: "love" },
+//             { word: "you", markAfter: "." },
+//             { word: "***", wrongType: "lack" },
+//             { word: "***", wrongType: "lack" },
+//             { word: "***", wrongType: "lack" },
+//             { word: "***", wrongType: "lack" },
+//         ];
+//         const result = check(userInput, source);
+
+//         expect(result).toEqual(expected);
+//     });
+// });

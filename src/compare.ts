@@ -43,14 +43,14 @@ export function compare(
     for (let i = 0; i < maxLength; i++) {
         const sourceIndex = redundantCount + i;
         const userInputIndex = i - lackCount;
-        const resultIndex = lackCount + i;
+        const resultIndex = i;
 
         const userWordMarked = userInput[userInputIndex];
         const sourceWordMarked = source[sourceIndex];
 
         if (userWordMarked === undefined) {
             // 说明 userInput 数量少了
-            result.push(LACK_WORD);
+            result.push(_.cloneDeep(LACK_WORD));
 
             // move mark
             if (result[resultIndex - 1]?.markAfter) {
@@ -98,7 +98,7 @@ export function compare(
             result[i].wrongType = "redundant";
             redundantCount++;
         } else if (max === scoreLack) {
-            result.splice(resultIndex, 0, LACK_WORD);
+            result.splice(resultIndex, 0, _.cloneDeep(LACK_WORD));
             // move mark
             if (result[resultIndex - 1]?.markAfter) {
                 result[resultIndex].markAfter =

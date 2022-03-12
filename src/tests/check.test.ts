@@ -118,4 +118,19 @@ describe("I love you. Do you love me?", () => {
         const result = check(userInput, source);
         expect(result).toEqual(expected);
     });
+
+    it("case: linbreak", () => {
+        const userInput = "I love u.\nDo you love me";
+        const expected = [
+            { word: "I" },
+            { word: "love" },
+            { word: "u", markAfter: ".\n", wrongType: "misspell" },
+            { word: "Do" },
+            { word: "you" },
+            { word: "love" },
+            { word: "me" },
+        ];
+        const result = check(userInput, source);
+        expect(result).toEqual(expected);
+    });
 });

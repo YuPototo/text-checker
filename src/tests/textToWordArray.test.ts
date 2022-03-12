@@ -1,4 +1,9 @@
-import { textToWordArray, wordToMarkedWord, containsEndMark } from "../index";
+import {
+    textToWordArray,
+    wordToMarkedWord,
+    containsEndMark,
+    splitByLineBreaker,
+} from "../index";
 
 describe("containsEndMark", () => {
     it("should return false when no mark", () => {
@@ -7,6 +12,14 @@ describe("containsEndMark", () => {
 
     it("should return true with .", () => {
         expect(containsEndMark("word.")).toBeTruthy();
+    });
+
+    it("should return true with .\n", () => {
+        expect(containsEndMark("word.\n")).toBeTruthy();
+    });
+
+    it("should return true withw \n", () => {
+        expect(containsEndMark("word\n")).toBeTruthy();
     });
 });
 
@@ -44,6 +57,22 @@ describe("wordToMarkedWord", () => {
             word: "non-governmental",
         });
     });
+
+    it("should process linebrekaker and mark", () => {
+        const text = "hello.\n";
+        expect(wordToMarkedWord(text)).toEqual({
+            word: "hello",
+            markAfter: ".\n",
+        });
+    });
+
+    it("should process linebrekaker", () => {
+        const text = "hello\n";
+        expect(wordToMarkedWord(text)).toEqual({
+            word: "hello",
+            markAfter: "\n",
+        });
+    });
 });
 
 describe("textToWordArray", () => {
@@ -56,5 +85,28 @@ describe("textToWordArray", () => {
         ];
         const result = textToWordArray(text);
         expect(result).toEqual(expected);
+    });
+
+    it("should process \n rightly", () => {
+        const text = "I love you.\nDo you";
+        const expected = [
+            { word: "I" },
+            { word: "love" },
+            { word: "you", markAfter: ".\n" },
+            { word: "Do" },
+            { word: "you" },
+        ];
+        const result = textToWordArray(text);
+        expect(result).toEqual(expected);
+    });
+});
+
+describe("splitByLineBreaker", () => {
+    it("word without line breaker", () => {
+        expect(splitByLineBreaker("word")).toBeUndefined();
+    });
+
+    it("word with linebreaker", () => {
+        expect(splitByLineBreaker("word\nafter")).toEqual(["word\n", "after"]);
     });
 });

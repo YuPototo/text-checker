@@ -99,6 +99,13 @@ describe("textToWordArray", () => {
         const result = textToWordArray(text);
         expect(result).toEqual(expected);
     });
+
+    it("should process multiple space", () => {
+        const text = "I   love";
+        const expected = [{ word: "I" }, { word: "love" }];
+        const result = textToWordArray(text);
+        expect(result).toEqual(expected);
+    });
 });
 
 describe("splitByLineBreaker", () => {

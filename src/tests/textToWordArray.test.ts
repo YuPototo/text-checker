@@ -87,7 +87,7 @@ describe("textToWordArray", () => {
         expect(result).toEqual(expected);
     });
 
-    it("should process \n rightly", () => {
+    it("should process \\n rightly", () => {
         const text = "I love you.\nDo you";
         const expected = [
             { word: "I" },

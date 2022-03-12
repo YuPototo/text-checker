@@ -1,9 +1,9 @@
 import { check } from "../check";
 
-describe("check 1", () => {
+describe("check 1: I love you", () => {
     const source = "I love you";
 
-    it("test 1.1", () => {
+    it("test 1.1: I love you", () => {
         const userInput = "I love you";
         const expected = [{ word: "I" }, { word: "love" }, { word: "you" }];
         const result = check(userInput, source);
@@ -11,7 +11,7 @@ describe("check 1", () => {
         expect(result).toEqual(expected);
     });
 
-    it("test 1.2", () => {
+    it("test 1.2: i Love YOU", () => {
         const userInput = "i Love YOU";
         const expected = [{ word: "i" }, { word: "Love" }, { word: "YOU" }];
         const result = check(userInput, source);
@@ -19,7 +19,7 @@ describe("check 1", () => {
         expect(result).toEqual(expected);
     });
 
-    it("test 1.3", () => {
+    it("test 1.3: I love u", () => {
         const userInput = "I love u";
         const expected = [
             { word: "I" },
@@ -66,6 +66,20 @@ describe("check 1", () => {
 
         expect(result).toEqual(expected);
     });
+
+    // it("I red red love you", () => {
+    //     const userInput = "I red red love you";
+    //     const expected = [
+    //         { word: "I" },
+    //         { word: "red", wrongType: "redundant" },
+    //         { word: "red", wrongType: "redundant" },
+    //         { word: "love" },
+    //         { word: "you" },
+    //     ];
+    //     const result = check(userInput, source);
+
+    //     expect(result).toEqual(expected);
+    // });
 });
 
 describe("I love you. Do you love me?", () => {

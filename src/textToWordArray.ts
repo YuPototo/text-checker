@@ -30,7 +30,7 @@ export function splitByLineBreaker(word: string) {
 }
 
 export function textToWordArray(text: string): WordMarked[] {
-    const arr = text.split(/\s+/);
+    const arr = text.split(/[^\S\r\n]+/); // 匹配空格，但\n不算
 
     const arrCopy = cloneDeep(arr);
 

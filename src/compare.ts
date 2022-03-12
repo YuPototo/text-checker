@@ -40,24 +40,33 @@ export function compare(
     let redundantCount = 0;
     let lackCount = 0;
 
-    for (let i = 0; i < maxLength; i++) {
-        const sourceIndex = redundantCount + i;
+    let maxLengthFixer = 0;
+    for (let i = 0; i < maxLength + maxLengthFixer; i++) {
+        const sourceIndex = i - redundantCount;
         const userInputIndex = i - lackCount;
         const resultIndex = i;
 
         const userWordMarked = userInput[userInputIndex];
         const sourceWordMarked = source[sourceIndex];
 
+        maxLengthFixer = userInput.length < source.length ? redundantCount : 0;
+
         if (userWordMarked === undefined) {
-            // 说明 userInput 数量少了
+            // 说明不再有 userWord
             result.push(_.cloneDeep(LACK_WORD));
 
             // move mark
-            if (result[resultIndex - 1]?.markAfter) {
+            const previousResultWord = result[resultIndex - 1];
+            const previousSourceWord = source[sourceIndex - 1];
+
+            if (
+                previousResultWord?.markAfter &&
+                previousSourceWord.markAfter === undefined
+            ) {
                 result[resultIndex].markAfter =
                     result[resultIndex - 1].markAfter;
+                delete result[resultIndex - 1]?.markAfter;
             }
-            delete result[resultIndex - 1]?.markAfter;
             lackCount++;
             continue;
         }
@@ -100,11 +109,17 @@ export function compare(
         } else if (max === scoreLack) {
             result.splice(resultIndex, 0, _.cloneDeep(LACK_WORD));
             // move mark
-            if (result[resultIndex - 1]?.markAfter) {
+            const previousResultWord = result[resultIndex - 1];
+            const previousSourceWord = source[sourceIndex - 1];
+
+            if (
+                previousResultWord?.markAfter &&
+                previousSourceWord.markAfter === undefined
+            ) {
                 result[resultIndex].markAfter =
                     result[resultIndex - 1].markAfter;
+                delete result[resultIndex - 1]?.markAfter;
             }
-            delete result[resultIndex - 1]?.markAfter;
             lackCount++;
         }
     }

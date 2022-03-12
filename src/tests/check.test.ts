@@ -68,23 +68,54 @@ describe("check 1", () => {
     });
 });
 
-// describe("I love you. Do you love me?", () => {
-//     const source = "I love you. Do you love me?";
+describe("I love you. Do you love me?", () => {
+    const source = "I love you. Do you love me?";
 
-//     // 这个测试通不过
-//     it("case: I love you.", () => {
-//         const userInput = "I love you.";
-//         const expected = [
-//             { word: "I" },
-//             { word: "love" },
-//             { word: "you", markAfter: "." },
-//             { word: "***", wrongType: "lack" },
-//             { word: "***", wrongType: "lack" },
-//             { word: "***", wrongType: "lack" },
-//             { word: "***", wrongType: "lack" },
-//         ];
-//         const result = check(userInput, source);
+    it("case: I love you.", () => {
+        const userInput = "I love you.";
+        const expected = [
+            { word: "I" },
+            { word: "love" },
+            { word: "you", markAfter: "." },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+        ];
+        const result = check(userInput, source);
 
-//         expect(result).toEqual(expected);
-//     });
-// });
+        expect(result).toEqual(expected);
+    });
+
+    it("case: I redundant love you.", () => {
+        const userInput = "I redundant love you.";
+        const expected = [
+            { word: "I" },
+            { word: "redundant", wrongType: "redundant" },
+            { word: "love" },
+            { word: "you", markAfter: "." },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+            { word: "***", wrongType: "lack" },
+        ];
+        const result = check(userInput, source);
+        expect(result).toEqual(expected);
+    });
+
+    it("case: I love you redundant. Do you love me", () => {
+        const userInput = "I love you redundant. Do you love me";
+        const expected = [
+            { word: "I" },
+            { word: "love" },
+            { word: "you" },
+            { word: "redundant", wrongType: "redundant", markAfter: "." },
+            { word: "Do" },
+            { word: "you" },
+            { word: "love" },
+            { word: "me" },
+        ];
+        const result = check(userInput, source);
+        expect(result).toEqual(expected);
+    });
+});

@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { cloneDeep } from "lodash";
 import type { CheckResult, CheckWord, WordMarked } from "./type";
 
 export function compareParts(
@@ -27,7 +27,7 @@ export function compare(
     userInput: WordMarked[],
     source: WordMarked[]
 ): CheckResult {
-    const result = _.cloneDeep(userInput) as CheckResult;
+    const result = cloneDeep(userInput) as CheckResult;
     const LACK_WORD: CheckWord = { word: "***", wrongType: "lack" };
 
     const maxLength = Math.max(userInput.length, source.length);
@@ -47,7 +47,7 @@ export function compare(
 
         if (userWordMarked === undefined) {
             // 说明不再有 userWord
-            result.push(_.cloneDeep(LACK_WORD));
+            result.push(cloneDeep(LACK_WORD));
 
             // move mark
             const previousResultWord = result[resultIndex - 1];
@@ -114,7 +114,7 @@ export function compare(
             result[i].wrongType = "redundant";
             redundantCount++;
         } else if (max === scoreLack) {
-            result.splice(resultIndex, 0, _.cloneDeep(LACK_WORD));
+            result.splice(resultIndex, 0, cloneDeep(LACK_WORD));
             // move mark
             const previousResultWord = result[resultIndex - 1];
             const previousSourceWord = source[sourceIndex - 1];

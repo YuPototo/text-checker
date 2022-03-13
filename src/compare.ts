@@ -1,9 +1,6 @@
 import * as _ from "lodash";
 import type { CheckResult, CheckWord, WordMarked } from "./type";
 
-/*
-    userWords 和 sourceWords 都是 lower case
-*/
 export function compareParts(
     userWords: string[],
     sourceWords: string[]
@@ -26,9 +23,6 @@ export function compareParts(
     return matchCount / sourceLen;
 }
 
-/*
-    这里的 word 都已经转化为 lower case
-*/
 export function compare(
     userInput: WordMarked[],
     source: WordMarked[]
@@ -39,8 +33,8 @@ export function compare(
     const maxLength = Math.max(userInput.length, source.length);
     let redundantCount = 0;
     let lackCount = 0;
-
     let maxLengthFixer = 0;
+
     for (let i = 0; i < maxLength + maxLengthFixer; i++) {
         const sourceIndex = i - redundantCount;
         const userInputIndex = i - lackCount;
@@ -84,24 +78,37 @@ export function compare(
         )
             continue;
 
-        const scoreMisspell = compareParts(
-            userInput.slice(userInputIndex).map((el) => el.word),
-            source.slice(sourceIndex).map((el) => el.word)
-        );
-
-        const scoreRedundant = compareParts(
-            userInput.slice(userInputIndex + 1).map((el) => el.word),
-            source.slice(sourceIndex).map((el) => el.word)
-        );
-
-        const scoreLack = compareParts(
-            userInput.slice(userInputIndex).map((el) => el.word),
-            source.slice(sourceIndex + 1).map((el) => el.word)
+        const { scoreMisspell, scoreRedundant, scoreLack } = getScores(
+            userInput,
+            source,
+            userInputIndex,
+            sourceIndex
         );
 
         const max = Math.max(scoreLack, scoreRedundant, scoreMisspell);
 
-        if (max === scoreMisspell) {
+        if (max === scoreMisspell && max === scoreRedundant) {
+            let scoreMisspellNextWord = getMaxScore(
+                userInput,
+                source,
+                userInputIndex + 1,
+                sourceIndex + 1
+            );
+
+            let scoreRedundantNextWord = getMaxScore(
+                userInput,
+                source,
+                userInputIndex + 1,
+                sourceIndex - 1
+            );
+
+            if (scoreMisspellNextWord >= scoreRedundantNextWord) {
+                result[i].wrongType = "misspell";
+            } else {
+                result[i].wrongType = "redundant";
+                redundantCount++;
+            }
+        } else if (max === scoreMisspell) {
             result[i].wrongType = "misspell";
         } else if (max === scoreRedundant) {
             result[i].wrongType = "redundant";
@@ -125,4 +132,86 @@ export function compare(
     }
 
     return result;
+}
+
+function getMisspellScore(
+    userInput: WordMarked[],
+    source: WordMarked[],
+    userInputIndex: number,
+    sourceIndex: number
+): number {
+    return compareParts(
+        userInput.slice(userInputIndex).map((el) => el.word),
+        source.slice(sourceIndex).map((el) => el.word)
+    );
+}
+
+function getRedundantScore(
+    userInput: WordMarked[],
+    source: WordMarked[],
+    userInputIndex: number,
+    sourceIndex: number
+): number {
+    return compareParts(
+        userInput.slice(userInputIndex + 1).map((el) => el.word),
+        source.slice(sourceIndex).map((el) => el.word)
+    );
+}
+
+function getLackScore(
+    userInput: WordMarked[],
+    source: WordMarked[],
+    userInputIndex: number,
+    sourceIndex: number
+): number {
+    return compareParts(
+        userInput.slice(userInputIndex).map((el) => el.word),
+        source.slice(sourceIndex + 1).map((el) => el.word)
+    );
+}
+
+function getScores(
+    userInput: WordMarked[],
+    source: WordMarked[],
+    userInputIndex: number,
+    sourceIndex: number
+) {
+    const scoreMisspell = getMisspellScore(
+        userInput,
+        source,
+        userInputIndex,
+        sourceIndex
+    );
+    const scoreRedundant = getRedundantScore(
+        userInput,
+        source,
+        userInputIndex,
+        sourceIndex
+    );
+    const scoreLack = getLackScore(
+        userInput,
+        source,
+        userInputIndex,
+        sourceIndex
+    );
+    return {
+        scoreMisspell,
+        scoreRedundant,
+        scoreLack,
+    };
+}
+
+function getMaxScore(
+    userInput: WordMarked[],
+    source: WordMarked[],
+    userInputIndex: number,
+    sourceIndex: number
+) {
+    const { scoreMisspell, scoreRedundant, scoreLack } = getScores(
+        userInput,
+        source,
+        userInputIndex,
+        sourceIndex
+    );
+    return Math.max(scoreMisspell, scoreRedundant, scoreLack);
 }

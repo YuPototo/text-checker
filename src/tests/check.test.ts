@@ -67,19 +67,19 @@ describe("check 1: I love you", () => {
         expect(result).toEqual(expected);
     });
 
-    // it("I red red love you", () => {
-    //     const userInput = "I red red love you";
-    //     const expected = [
-    //         { word: "I" },
-    //         { word: "red", wrongType: "redundant" },
-    //         { word: "red", wrongType: "redundant" },
-    //         { word: "love" },
-    //         { word: "you" },
-    //     ];
-    //     const result = check(userInput, source);
+    it("I red red love you", () => {
+        const userInput = "I red red love you";
+        const expected = [
+            { word: "I" },
+            { word: "red", wrongType: "redundant" },
+            { word: "red", wrongType: "redundant" },
+            { word: "love" },
+            { word: "you" },
+        ];
+        const result = check(userInput, source);
 
-    //     expect(result).toEqual(expected);
-    // });
+        expect(result).toEqual(expected);
+    });
 });
 
 describe("I love you. Do you love me?", () => {

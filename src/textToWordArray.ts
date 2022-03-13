@@ -1,4 +1,4 @@
-import { cloneDeep, split } from "lodash";
+import { cloneDeep } from "lodash";
 import type { WordMarked } from "./type";
 
 // 暂时只考虑下面的符号

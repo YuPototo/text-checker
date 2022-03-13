@@ -1,6 +1,6 @@
 {
     "name": "@qinyu2022/text-checker",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "Compare Text",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

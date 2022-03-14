@@ -148,3 +148,21 @@ describe("I love you. Do you love me?", () => {
         expect(result).toEqual(expected);
     });
 });
+
+describe("Marks", () => {
+    it("case: ;", () => {
+        const source = "I love you; Do you love me?";
+        const userInput = "I love you. Do you love me";
+        const expected = [
+            { word: "I" },
+            { word: "love" },
+            { word: "you", markAfter: "." },
+            { word: "Do" },
+            { word: "you" },
+            { word: "love" },
+            { word: "me" },
+        ];
+        const result = check(userInput, source);
+        expect(result).toEqual(expected);
+    });
+});

@@ -2,16 +2,14 @@ import { cloneDeep } from "lodash";
 import type { WordMarked } from "./type";
 
 // 暂时只考虑下面的符号
-const MARK = [".", ",", "?"];
-
 export function containsEndMark(word: string): boolean {
-    const re = /[\.\?,;]$|(\n)$/; // 以符号结尾，或者以换行结尾
+    const re = /[\.\?,;:]$|(\n)$/; // 以符号结尾，或者以换行结尾
     return re.test(word);
 }
 
 export function wordToMarkedWord(word: string): WordMarked {
     if (containsEndMark(word)) {
-        const re = /(?<mark>[\.\?,;]?(\n)?)$/;
+        const re = /(?<mark>[\.\?,;:]?(\n)?)$/;
         const match = word.match(re);
         const mark = match.groups.mark;
         return {

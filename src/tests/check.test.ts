@@ -165,4 +165,40 @@ describe("Marks", () => {
         const result = check(userInput, source);
         expect(result).toEqual(expected);
     });
+
+    it('case: "', () => {
+        const source = "He says: how are you";
+        const userInput = "He says: how are you";
+        const expected = [
+            { word: "He" },
+            { word: "says", markAfter: ":" },
+            { word: "how" },
+            { word: "are" },
+            { word: "you" },
+        ];
+        const result = check(userInput, source);
+        expect(result).toEqual(expected);
+
+        const userInput2 = "He says, how are you";
+        const expected2 = [
+            { word: "He" },
+            { word: "says", markAfter: "," },
+            { word: "how" },
+            { word: "are" },
+            { word: "you" },
+        ];
+        const result2 = check(userInput2, source);
+        expect(result2).toEqual(expected2);
+
+        const userInput3 = "He says how are you";
+        const expected3 = [
+            { word: "He" },
+            { word: "says" },
+            { word: "how" },
+            { word: "are" },
+            { word: "you" },
+        ];
+        const result3 = check(userInput3, source);
+        expect(result3).toEqual(expected3);
+    });
 });
